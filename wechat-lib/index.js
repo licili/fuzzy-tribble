@@ -9,6 +9,7 @@ let api = {
   // 智能语义接口
   semanticUrl,
   accessToken: base + 'token?grant_type=client_credential',
+  ticket: base + 'ticket/getticket?type=jsapi',
   // 临时素材接口
   temporary: {
     upload: base + 'media/upload?', // 上传
@@ -74,11 +75,12 @@ class Weixin {
     this.appSecret = opts.appSecret
     this.getAccessToken = opts.getAccessToken;
     this.saveAccessToken = opts.saveAccessToken;
-    
+    this.getTicket = opts.getTicket;
+    this.saveTicket = opts.saveTicket;
+    // 获取accessToken
     this.fetchAccessToken();
   }
   async request (options) {
-    console.log('options',options);
     options = Object.assign({}, options, {
       json:true
     })
@@ -93,6 +95,24 @@ class Weixin {
       console.log(err + '..');
     }
   }
+
+  // 获取 ticket
+  async fetchTicket (access_token) {
+    let data = await this.getTicket()
+    if (!this.isValid(data)) {
+      data = await this.updateTicket(access_token)
+      await this.saveTicket(data)
+    }
+    return data;
+  }
+  async updateTicket (access_token) {
+    let url = `${api.ticket}&access_token=${access_token}`
+    let ticket = await this.request({ url })
+    let now = new Date().getTime()
+    ticket.expires_in = now + (ticket.expires_in - 20) * 1000
+    return ticket
+  }
+
   // 1. 检查数据中的token是否过期
   // 2. 过期就刷新
   // 3. token入库
@@ -134,7 +154,6 @@ class Weixin {
   async handle (type, ...args) {
     let { token } = await this.fetchAccessToken();
     let config;
-    console.log(args.length > 0);
     args.length > 0 ? config = await this[type].apply(this, [token, ...args]) : config = await this[type](token);
 
 

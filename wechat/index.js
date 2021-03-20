@@ -3,7 +3,7 @@ let WechatOAuth = require('../wechat-lib/oauth')
 let config = require('../config/config')
 let mongoose = require('mongoose');
 let Token = mongoose.model('Token');
-
+let Ticket = mongoose.model('Ticket');
 
 
 let wxConfig = {
@@ -17,6 +17,14 @@ let wxConfig = {
     },
     saveAccessToken: async (data) => {
       let res = await Token.saveAccessToken(data);
+      return res;
+    },
+    getTicket: async () => {
+      let res = await Ticket.getTicket();
+      return res;
+    },
+    saveTicket: async (data) => {
+      let res = await Ticket.saveTicket(data);
       return res;
     }
   }

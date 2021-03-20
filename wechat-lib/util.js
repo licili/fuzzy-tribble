@@ -1,4 +1,5 @@
 let xml2js = require('xml2js');
+let crypto = require('crypto')
 const template = require('./tpl');
 exports.parseXML = xml => {
 
@@ -14,6 +15,49 @@ exports.parseXML = xml => {
   })
   
 }
+
+
+
+
+  // 获取随机字符串
+  const createNonce = function () {
+    return Math.random().toString(36).substr(2,15)
+  }
+  // 创建时间戳
+  const createTimestamp = function () {
+    return parseInt(new Date().getTime()/1000,10) + ''
+  }
+
+
+    // 获取js-sdk签名需要的参数 nonce timestamp url ticket
+  function sign (ticket, url) {
+    let noncestr = createNonce();
+    let timestamp = createTimestamp();
+    let signature = _sign(noncestr, ticket, timestamp, url);
+    return {noncestr,timestamp,signature}
+  }
+  function _sign (noncestr, ticket, timestamp, url) {
+    let params = [
+      'noncestr=' + noncestr,
+      'jsapi_ticket=' + ticket,
+      'timestamp=' + timestamp,
+      'url=' + url
+    ]
+    let str = params.sort().join('&');
+    let sha1 = crypto.createHash('sha1');
+    sha1.update(str);
+    let result = sha1.digest('hex')
+    console.log('result ===>',result);
+    return result
+}
+  
+exports.sign = sign;
+
+
+
+
+
+
 
 
 let formatMessage = result => {
@@ -66,8 +110,7 @@ let tpl = (content, message) => {
     toUserName: message.FromUserName,
     fromUserName:message.ToUserName
   })
-  // console.log('===================');
-  // console.log(info);
+
 
   return template(info);
 }

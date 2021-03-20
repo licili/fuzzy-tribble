@@ -30,7 +30,6 @@ TokenSchema.pre('save', function (next) {
 
 TokenSchema.statics = {
   async getAccessToken () {
-    console.log('hhhhhh');
     let token = await this.findOne({
       name:'access_token'
     })

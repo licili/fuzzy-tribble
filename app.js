@@ -1,14 +1,9 @@
 const Koa = require('koa')
 let Router = require('koa-router')
-const moment = require('moment')
-const path = require('path')
+const Moment = require('moment')
+const Views = require('koa-views')
 
-const wechat = require('./wechat-lib/middleware')
 const config = require('./config/config')
-
-const {
-  reply
-} = require('./wechat/reply')
 
 const {
   initSchemas,
@@ -20,8 +15,6 @@ const {
 (async () => {
 
   await connect(config.db);
-
-
   await initSchemas();
 
   
@@ -29,22 +22,15 @@ const {
   const app = new Koa()
   // 生成路由实例
   const router = new Router()
-  
-  const views = require('koa-views')
-  // 配置模板引擎
-  console.log(__dirname);
-  console.log(__filename);
-  let r = path.join(__dirname, '/app/views');
-  console.log();
 
-  const render = views(__dirname + '/app/views', {
+  // 配置模板引擎
+  const render = Views(__dirname + '/app/views', {
     extension: 'pug',
     options: {
-      moment:moment
+      moment:Moment
     }
   })
   app.use(render)
-
 
 
 

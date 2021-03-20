@@ -2,6 +2,7 @@
 const Wechat = require('../app/controllers/wechat');
 
 module.exports = router => {
+  // JS-SDK
   router.get('/sdk',Wechat.sdk)
 
 

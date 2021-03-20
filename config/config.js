@@ -16,7 +16,8 @@ const config = {
     // APPSECRET: 'cd02336f2242e1e43957bd9b16bc9247',
   },
   db: 'mongodb://localhost/wechat',
-  baseUrl:'http://k37722444u.zicp.vip/',
+  // baseUrl:'http://k37722444u.zicp.vip/',
+  baseUrl:'http://micuzq.natappfree.cc/'
 
 }
 

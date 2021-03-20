@@ -26,7 +26,6 @@ module.exports = (config,reply) => {
         ctx.body = 'wrong'
       }
     } else if (ctx.method === 'POST') {
-      console.log('hh');
       if (sha !== signature) {
         return (ctx.body = 'FAILED')
       }
@@ -35,11 +34,10 @@ module.exports = (config,reply) => {
         limit: '1mb',
         encoding: 'utf8'
       })
-      console.log('data');
       let content = await util.parseXML(data);
       // 格式化了xml
       let message = await util.formatMessage(content.xml);
-      console.log(message);
+
       ctx.weixin = message;
       // 回复的内容挂载到了ctx.body了 可以通过ctx.body获取
       await reply.apply(ctx, [ctx, next]);
