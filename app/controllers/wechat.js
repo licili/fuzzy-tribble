@@ -5,6 +5,13 @@ const config = require('../../config/config');
 let { getOAuth}= require('../../wechat/index')
 const wechatMiddle = require('../../wechat-lib/middleware');
 
+exports.sdk = async (ctx, next) => {
+  // 这个render方法是koa-views已经实现了的
+  await ctx.render('wechat/sdk', {
+    title: 'SDK',
+    desc:'TEST'
+  })
+} 
 // 接入消息中间件  （通过路由来接管了）
 exports.hear = async (ctx, next) => {
   let middle = wechatMiddle(config, reply)

@@ -42,18 +42,21 @@ tpl 模板字符串拼接
 - 有效期两个小时
 - 新老 token 在五分钟内平滑过渡
 
-我和微信交互的钥匙 ：通过 request-promise 来获取access_token 然后存到mongoDB中
-
+我和微信交互的钥匙 ：通过 request-promise 来获取 access_token 然后存到 mongoDB 中
 
 # 生成二维码
-1. 需要先获取到二维码ticket，再根据ticket生成二维码
 
+1. 需要先获取到二维码 ticket，再根据 ticket 生成二维码
 
+# 公众号菜单
 
-# 公众号菜单 
 1. 增删改
 2. 菜单自定义事件 （用户与微信公众号产生的一种联系）
 3. 网页授权获取用户资料
 4. Pug 模板引擎接入 => 网页渲染
-5. 票据Ticket网页签名验证 JS-SDK => 存数据库
+5. 票据 Ticket 网页签名验证 JS-SDK => 存数据库
 6. JS-SDK 语言查询电影
+
+# JS-SDK 使用
+
+为了要连接 JS，要创建一个页面，所以使用到了模板引擎来生成页面，这里用到的是 pug（前身是 jade），它在 koa 中要结合 koa-view 来使用
